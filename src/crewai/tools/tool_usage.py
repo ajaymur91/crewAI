@@ -6,7 +6,7 @@ from langchain_core.tools import BaseTool
 from langchain_openai import ChatOpenAI
 
 from crewai.agents.tools_handler import ToolsHandler
-from crewai.telemetry import Telemetry
+#from crewai.telemetry import Telemetry
 from crewai.tools.tool_calling import InstructorToolCalling, ToolCalling
 from crewai.utilities import I18N, Converter, ConverterError, Printer
 
@@ -48,7 +48,7 @@ class ToolUsage:
     ) -> None:
         self._i18n: I18N = I18N()
         self._printer: Printer = Printer()
-        self._telemetry: Telemetry = Telemetry()
+        #self._telemetry: Telemetry = Telemetry()
         self._run_attempts: int = 1
         self._max_parsing_attempts: int = 3
         self._remember_format_after_usages: int = 3
@@ -102,11 +102,11 @@ class ToolUsage:
                     tool_names=self.tools_names
                 )
                 self._printer.print(content=f"\n\n{result}\n", color="yellow")
-                self._telemetry.tool_repeated_usage(
-                    llm=self.function_calling_llm,
-                    tool_name=tool.name,
-                    attempts=self._run_attempts,
-                )
+                #self._telemetry.tool_repeated_usage(
+                #    llm=self.function_calling_llm,
+                #    tool_name=tool.name,
+                #    attempts=self._run_attempts,
+                #)
                 result = self._format_result(result=result)
                 return result
             except Exception:
@@ -148,7 +148,7 @@ class ToolUsage:
             except Exception as e:
                 self._run_attempts += 1
                 if self._run_attempts > self._max_parsing_attempts:
-                    self._telemetry.tool_usage_error(llm=self.function_calling_llm)
+                    #self._telemetry.tool_usage_error(llm=self.function_calling_llm)
                     error_message = self._i18n.errors("tool_usage_exception").format(
                         error=e, tool=tool.name, tool_inputs=tool.description
                     )
@@ -179,11 +179,11 @@ class ToolUsage:
                 )
 
         self._printer.print(content=f"\n\n{result}\n", color="yellow")
-        self._telemetry.tool_usage(
-            llm=self.function_calling_llm,
-            tool_name=tool.name,
-            attempts=self._run_attempts,
-        )
+        #self._telemetry.tool_usage(
+        #    llm=self.function_calling_llm,
+        #    tool_name=tool.name,
+        #    attempts=self._run_attempts,
+        #)
         result = self._format_result(result=result)
         return result
 
@@ -299,7 +299,7 @@ class ToolUsage:
         except Exception as e:
             self._run_attempts += 1
             if self._run_attempts > self._max_parsing_attempts:
-                self._telemetry.tool_usage_error(llm=self.function_calling_llm)
+                #self._telemetry.tool_usage_error(llm=self.function_calling_llm)
                 self.task.increment_tools_errors()
                 self._printer.print(content=f"\n\n{e}\n", color="red")
                 return ToolUsageErrorException(
