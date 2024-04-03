@@ -23,7 +23,7 @@ from crewai.memory.long_term.long_term_memory import LongTermMemory
 from crewai.memory.short_term.short_term_memory import ShortTermMemory
 from crewai.process import Process
 from crewai.task import Task
-from crewai.telemetry import Telemetry
+#from crewai.telemetry import Telemetry
 from crewai.tools.agent_tools import AgentTools
 from crewai.utilities import I18N, Logger, RPMController
 
@@ -146,9 +146,9 @@ class Crew(BaseModel):
         self._cache_handler = CacheHandler()
         self._logger = Logger(self.verbose)
         self._rpm_controller = RPMController(max_rpm=self.max_rpm, logger=self._logger)
-        self._telemetry = Telemetry()
-        self._telemetry.set_tracer()
-        self._telemetry.crew_creation(self)
+        #self._telemetry = Telemetry()
+        #self._telemetry.set_tracer()
+        #self._telemetry.crew_creation(self)
         return self
 
     @model_validator(mode="after")
@@ -222,7 +222,7 @@ class Crew(BaseModel):
 
     def kickoff(self, inputs: Optional[Dict[str, Any]] = {}) -> str:
         """Starts the crew to work on its assigned tasks."""
-        self._execution_span = self._telemetry.crew_execution_span(self)
+        #self._execution_span = self._telemetry.crew_execution_span(self)
         self._interpolate_inputs(inputs)
         self._set_tasks_callbacks()
 
@@ -338,7 +338,7 @@ class Crew(BaseModel):
     def _finish_execution(self, output) -> None:
         if self.max_rpm:
             self._rpm_controller.stop_rpm_counter()
-        self._telemetry.end_crew(self, output)
+        #self._telemetry.end_crew(self, output)
 
     def __repr__(self):
         return f"Crew(id={self.id}, process={self.process}, number_of_agents={len(self.agents)}, number_of_tasks={len(self.tasks)})"
